@@ -14,28 +14,22 @@
  * }
  */
 class Solution {
+    int ans = 0;
     public int averageOfSubtree(TreeNode root) {
-        return avgOfSubtree(root).totalNode;
+        dfs(root);
+        return ans;
     }
-    public AvgNode avgOfSubtree(TreeNode root) {
+    public int[] dfs(TreeNode root) {
         if(root == null) {
-            return new AvgNode();
+            return new int[]{0, 0};
         }
-        AvgNode l = avgOfSubtree(root.left);
-        AvgNode r = avgOfSubtree(root.right);
-        AvgNode self = new AvgNode();
-        self.noOfNode = l.noOfNode + r.noOfNode + 1;
-        self.sumOfSubTree = l.sumOfSubTree + r.sumOfSubTree + root.val;
-        self.totalNode = l.totalNode + r.totalNode;
-        double avg = (1.0*self.sumOfSubTree) / self.noOfNode;
-        if((int)Math.floor(avg) == root.val) {
-            self.totalNode = self.totalNode + 1;
+        int[] left = dfs(root.left);
+        int[] right = dfs(root.right);
+        if((root.val+left[1]+right[1])/(left[0]+right[0]+1) == root.val) {
+            ans++;
         }
-        return self;
-    }
-    public class AvgNode {
-        int noOfNode = 0;
-        int sumOfSubTree = 0;
-        int totalNode = 0;
+        left[0] += right[0] + 1;
+        left[1] += right[1] + root.val;
+        return left;
     }
 }
