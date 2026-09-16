@@ -1,13 +1,19 @@
 class Solution {
 
     int n;
-    Integer[][][] dp;
+    int[][][] dp;
     static int MOD = 1000000007;
 
     public int numberOfSets(int n, int k) {
         this.n = n;
-        dp = new Integer[2][n][k+1];
-        
+        dp = new int[2][n][k+1];
+
+        for(int[][] d: dp) {
+            for(int[] d1: d) {
+                Arrays.fill(d1, -1);
+            }
+        }
+
         return numberOfSet(0, k, 0);
     }
 
@@ -20,7 +26,7 @@ class Solution {
             return 0;
         }
 
-        if(dp[state][i][k] != null) {
+        if(dp[state][i][k] != -1) {
             return dp[state][i][k];
         }
 
