@@ -3,7 +3,6 @@ class Solution {
         int n = s.length();
         Stack<String> st = new Stack<>();
         StringBuilder sb1 = new StringBuilder();
-        StringBuilder sb2 = new StringBuilder();
 
         for(int i = n - 1; i >= 0; i--) {
             if(s.charAt(i) == ')') {
