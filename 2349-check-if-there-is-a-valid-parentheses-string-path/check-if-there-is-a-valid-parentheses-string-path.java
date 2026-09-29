@@ -28,18 +28,14 @@ class Solution {
         int ans = 0;
         int curr = open + (grid[i][j] == '(' ? 1 : -1);
 
-        if(i+1 < m) {
-            if(curr >= 0) {
+        if(curr >= 0) {
+            if(i+1 < m) {
                 ans += hasValid(grid, i+1, j, curr);
             }
-        }
-
-        if(ans == 1) {
-            return dp[i][j][open] = 1;
-        }
-
-        if(j+1 < n) {
-            if(curr >= 0) {
+            if(ans == 1) {
+                return dp[i][j][open] = 1;
+            }
+            if(j+1 < n) {
                 ans += hasValid(grid, i, j+1, curr);
             }
         }
