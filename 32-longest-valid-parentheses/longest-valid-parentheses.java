@@ -1,24 +1,25 @@
 class Solution {
     public int longestValidParentheses(String s) {
-        int ans = 0;
         int n = s.length();
-        char[] ch = s.toCharArray();
+        int ans = 0;
         Stack<Integer> st = new Stack<>();
-        st.push(-1);//initial valid boundary started after these
+        int last = -1;
+
         for(int i = 0; i < n; i++) {
-            if(ch[i] == '(') {
+            if(s.charAt(i) == '(') {
                 st.push(i);
             }
             else {
-                st.pop();
-                if(st.isEmpty()) {
-                    st.push(i);//new boundary will start after these index
+                if(!st.isEmpty()) {
+                    st.pop();
+                    ans = Math.max(ans, i - (!st.isEmpty() ? st.peek() : last));
                 }
                 else {
-                    ans = Math.max(ans, i - st.peek());
+                    last = i;
                 }
             }
         }
+
         return ans;
     }
 }
