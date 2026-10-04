@@ -1,36 +1,42 @@
 class Solution {
-    Boolean[][] dp = new Boolean[101][101];
+    int n;
+    Boolean[][] dp;
     public boolean checkValidString(String s) {
-        return validate(s.toCharArray(), 0, 0);
+        n = s.length();
+        dp = new Boolean[n][n];
+        return checkValid(s, 0, 0);
     }
-    public boolean validate(char[] ch, int i, int curr) {
-        if(i == ch.length) {
-            if(curr == 0) {
-                return true;
+
+    public boolean checkValid(String s, int i, int open) {
+        if(i == n) {
+            return open == 0;
+        }
+
+        if(dp[i][open] != null) {
+            return dp[i][open];
+        }
+
+        if(s.charAt(i) == '(') {
+            if(checkValid(s, i+1, open+1)) {
+                return dp[i][open] = true;
             }
-            return false;
         }
-        if(dp[i][curr] != null) {
-            return dp[i][curr];
-        }
-        if(ch[i] == '(') {
-            dp[i][curr] = validate(ch, i+1, curr+1);
-        }
-        else if(ch[i] == ')' && curr > 0) {
-            dp[i][curr] = validate(ch, i+1, curr-1);
-        }
-        else if(ch[i] == '*') {
-            boolean a = validate(ch, i+1, curr);
-            boolean b = validate(ch, i+1, curr+1);
-            dp[i][curr] = (a || b);
-            if(curr > 0) {
-                boolean c = validate(ch, i+1, curr-1);
-                dp[i][curr] = (dp[i][curr] || c);
+        else if(s.charAt(i) == ')') {
+            if(open > 0 && checkValid(s, i+1, open-1)) {
+                return dp[i][open] = true;
             }
         }
         else {
-            dp[i][curr] = false;
+            if(checkValid(s, i+1, open+1)) {
+                return dp[i][open] = true;
+            }
+            if(open > 0 && checkValid(s, i+1, open-1)) {
+                return dp[i][open] = true;
+            }
+            if(checkValid(s, i+1, open)) {
+                return dp[i][open] = true;
+            }
         }
-        return dp[i][curr];
+        return dp[i][open] = false;
     }
 }
