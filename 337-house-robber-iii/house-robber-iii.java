@@ -22,25 +22,23 @@ class Solution {
         if(root == null) {
             return 0;
         }
-        if(root.left == null && root.right == null) {
-            return root.val;
-        }
-        if(dp.get(root) != null) {
+
+        if(dp.containsKey(root)) {
             return dp.get(root);
         }
-        int rob = root.val;
+
+        int ans = root.val;
         if(root.left != null) {
-            rob += dfs(root.left.left);
-            rob += dfs(root.left.right);
+            ans += dfs(root.left.left) + dfs(root.left.right);
         }
         if(root.right != null) {
-            rob += dfs(root.right.left);
-            rob += dfs(root.right.right);
+            ans += dfs(root.right.left) + dfs(root.right.right);
         }
-        int notRob = 0;
-        notRob += dfs(root.left);
-        notRob += dfs(root.right);
-        dp.put(root, Math.max(rob, notRob));
-        return Math.max(rob, notRob);
+
+        int skip = dfs(root.left) + dfs(root.right);
+
+        dp.put(root, Math.max(ans, skip));
+
+        return Math.max(ans, skip);
     }
 }
