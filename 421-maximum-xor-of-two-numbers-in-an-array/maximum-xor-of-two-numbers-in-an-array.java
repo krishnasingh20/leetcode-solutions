@@ -1,19 +1,5 @@
 class Solution {
-    public int findMaximumXOR(int[] nums) {
-        int ans = 0;
-        int n = nums.length;
-
-        Trie trie = new Trie();
-
-        for(int i = 0; i < n; i++) {
-            trie.insert(nums[i]);
-            ans = Math.max(ans, trie.maxXOR(nums[i]));
-        }
-
-        return ans;
-    }
     class Trie {
-
         class Node {
             Node one;
             Node zero;
@@ -21,65 +7,71 @@ class Solution {
 
         private Node root;
 
-        public Trie() {
+        Trie() {
             root = new Node();
         }
 
-        public void insert(int num) {
+        void insert(int num) {
             Node curr = root;
-
-            for(int i = 31; i >= 0; i--) {
-                int mask = (1 << i);
-
-                if((num & mask) != 0) {
-                    if(curr.one != null) {
-                        curr = curr.one;
-                    }
-                    else {
+            for(int i = 30; i >= 0; i--) {
+                if((num & (1 << i)) != 0) {
+                    if(curr.one == null) {
                         curr.one = new Node();
-                        curr = curr.one;
                     }
+                    curr = curr.one;
                 }
-                else  {
-                    if(curr.zero != null) {
-                        curr = curr.zero;
-                    }
-                    else {
+                else {
+                    if(curr.zero == null) {
                         curr.zero = new Node();
-                        curr = curr.zero;
                     }
+                    curr = curr.zero;
                 }
             }
         }
 
-        public int maxXOR(int num) {
-            int ans = 0;
+        int find(int num) {
             Node curr = root;
+            int ans = 0;
 
-            for(int i = 31; i >= 0; i--) {
-                int mask = (1 << i);
-
-                if((num & mask) != 0) {
+            for(int i = 30; i >= 0; i--) {
+                if((num & (1 << i)) != 0) {
                     if(curr.zero != null) {
-                        ans += mask;
+                        ans |= (1 << i);
                         curr = curr.zero;
                     }
-                    else {
+                    else if(curr.one != null) {
                         curr = curr.one;
+                    }
+                    else {
+                        return 0;
                     }
                 }
                 else {
                     if(curr.one != null) {
-                        ans += mask;
                         curr = curr.one;
+                        ans |= (1 << i);
+                    }
+                    else if(curr.zero != null) {
+                        curr = curr.zero;
                     }
                     else {
-                        curr = curr.zero;
+                        return 0;
                     }
                 }
             }
 
             return ans;
         }
+    }
+    public int findMaximumXOR(int[] nums) {
+        int ans = 0;
+        Trie t = new Trie();
+
+        for(int num: nums) {
+            ans = Math.max(ans, t.find(num));
+            t.insert(num);
+        }
+
+        return ans;
     }
 }
