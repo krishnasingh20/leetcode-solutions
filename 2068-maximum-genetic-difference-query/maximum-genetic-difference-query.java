@@ -58,11 +58,8 @@ class Solution {
                         curr = curr.zero;
                         ans |= (1 << i);
                     }
-                    else if(curr.one != null && curr.one.oneCount > 0) {
-                        curr = curr.one;
-                    }
                     else {
-                        return -1;
+                        curr = curr.one;
                     }
                 }
                 else {
@@ -70,11 +67,8 @@ class Solution {
                         curr = curr.one;
                         ans |= (1 << i);
                     }
-                    else if(curr.zero != null && curr.zero.zeroCount > 0) {
-                        curr = curr.zero;
-                    }
                     else {
-                        return -1;
+                        curr = curr.zero;
                     }
                 }
             }
