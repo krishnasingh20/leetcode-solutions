@@ -39,11 +39,8 @@ class Solution {
                         ans |= (1 << i);
                         curr = curr.zero;
                     }
-                    else if(curr.one != null) {
-                        curr = curr.one;
-                    }
                     else {
-                        return 0;
+                        curr = curr.one;
                     }
                 }
                 else {
@@ -51,11 +48,8 @@ class Solution {
                         curr = curr.one;
                         ans |= (1 << i);
                     }
-                    else if(curr.zero != null) {
-                        curr = curr.zero;
-                    }
                     else {
-                        return 0;
+                        curr = curr.zero;
                     }
                 }
             }
@@ -68,8 +62,8 @@ class Solution {
         Trie t = new Trie();
 
         for(int num: nums) {
-            ans = Math.max(ans, t.find(num));
             t.insert(num);
+            ans = Math.max(ans, t.find(num));
         }
 
         return ans;
