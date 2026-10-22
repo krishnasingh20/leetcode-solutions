@@ -1,7 +1,10 @@
 class Solution {
+    String colors;
+    List<List<Integer>> tree = new ArrayList<>();
+    int n;
     public int findColoredRoot(int[][] edges, String colors) {
-        int n = colors.length();
-        List<List<Integer>> tree = new ArrayList<>();
+        n = colors.length();
+        this.colors = colors;
 
         for(int i = 0; i < n; i++) {
             tree.add(new ArrayList<>());
@@ -16,7 +19,7 @@ class Solution {
             if(tree.get(i).size() == 3) {
                 continue;
             }
-            if(check(i, colors, tree) != -1) {
+            if(check(i) != -1) {
                 return i;
             }
         }
@@ -24,11 +27,11 @@ class Solution {
         return -1;
     }
 
-    public int check(int i, String colors, List<List<Integer>> tree) {
+    public int check(int i) {
         char c = colors.charAt(i);
         Queue<Integer> q = new LinkedList<>();
+        boolean[] visited = new boolean[n];
         q.add(i);
-        boolean[] visited = new boolean[colors.length()];
 
         while(!q.isEmpty()) {
             int size = q.size();
